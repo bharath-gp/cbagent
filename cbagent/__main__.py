@@ -10,6 +10,7 @@ from cbagent.collectors.ns_server import NSServer
 from cbagent.collectors.secondary_stats import SecondaryStats
 from cbagent.collectors.secondary_debugstats import SecondaryDebugStats
 from cbagent.collectors.secondary_latency import SecondaryLatencyStats
+from cbagent.collectors.secondary_gcstats import SecondaryGCStats
 from cbagent.collectors.n1ql_stats import N1QLStats
 from cbagent.collectors.ps import PS
 from cbagent.collectors.typeperf import TypePerf
@@ -39,6 +40,8 @@ def main():
                       help="secondary_latency")
     parser.add_option("--secondarydebugstats", action="store_true", dest="secondary_debugstats",
                       help="secondary_debugstats")
+    parser.add_option("--secondarygcstats", action="store_true", dest="secondary_gcstats",
+                      help="secondary_gcstats")
     parser.add_option("--n1ql", action="store_true", dest="n1ql_stats",
                       help="n1ql_stats")
     parser.add_option("--ps", action="store_true", dest="ps",
@@ -67,6 +70,8 @@ def main():
         collector = NSServer
     elif options.secondary_stats:
         collector = SecondaryStats
+    elif options.secondary_gcstats:
+        collector = SecondaryGCStats
     elif options.n1ql_stats:
         collector = N1QLStats
     elif options.ps:

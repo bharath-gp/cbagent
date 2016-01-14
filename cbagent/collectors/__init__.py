@@ -9,6 +9,7 @@ from ns_server import NSServer
 from secondary_stats import SecondaryStats
 from secondary_debugstats import SecondaryDebugStats
 from secondary_latency import SecondaryLatencyStats
+from secondary_gcstats import SecondaryGCStats
 from n1ql_stats import N1QLStats
 from ps import PS
 from typeperf import TypePerf
