@@ -1,5 +1,5 @@
 from collections import defaultdict
-
+from logger import logger
 from cbagent.collectors.libstats.remotestats import (RemoteStats,
                                                      multi_node_task,
                                                      single_node_task)
@@ -20,14 +20,20 @@ class NetStat(RemoteStats):
                 return iface
 
     def get_dev_stats(self):
+        i_face = ""
         for iface in ("eth5", "eth0", "em1"):
             result = self.run("grep {} /proc/net/dev".format(iface),
                               warn_only=True, quiet=True)
             if not result.return_code:
+                i_face = iface
                 break
-        cmd = "grep {} /proc/net/dev".format(iface)
+        cmd = "grep {} /proc/net/dev".format(i_face)
         stdout = self.run("{0}; sleep 1; {0}".format(cmd))
-        s1, s2 = stdout.split('\n')
+        try:
+            s1, s2 = stdout.split('\n')
+        except ValueError:
+            logger.info("Value Error. stdout: {}".format(stdout))
+            return None
         s1 = [int(v.split(":")[-1]) for v in s1.split() if v.split(":")[-1]]
         s2 = [int(v.split(":")[-1]) for v in s2.split() if v.split(":")[-1]]
         return {
