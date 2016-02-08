@@ -20,7 +20,12 @@ class NetStat(RemoteStats):
                 return iface
 
     def get_dev_stats(self):
-        cmd = "grep {} /proc/net/dev".format(self.iface)
+        for iface in ("eth5", "eth0", "em1"):
+            result = self.run("grep {} /proc/net/dev".format(iface),
+                              warn_only=True, quiet=True)
+            if not result.return_code:
+                break
+        cmd = "grep {} /proc/net/dev".format(iface)
         stdout = self.run("{0}; sleep 1; {0}".format(cmd))
         s1, s2 = stdout.split('\n')
         s1 = [int(v.split(":")[-1]) for v in s1.split() if v.split(":")[-1]]
