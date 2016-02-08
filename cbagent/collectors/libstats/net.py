@@ -27,7 +27,7 @@ class NetStat(RemoteStats):
             if not result.return_code:
                 i_face = iface
                 break
-        cmd = "grep {} /proc/net/dev".format(i_face)
+        cmd = "grep -w {} /proc/net/dev".format(i_face)
         stdout = self.run("{0}; sleep 1; {0}".format(cmd))
         try:
             s1, s2 = stdout.split('\n')
