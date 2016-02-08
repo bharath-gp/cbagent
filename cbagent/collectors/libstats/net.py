@@ -33,7 +33,12 @@ class NetStat(RemoteStats):
             s1, s2 = stdout.split('\n')
         except ValueError:
             logger.info("Value Error. stdout: {}".format(stdout))
-            return None
+            return {
+                "in_bytes_per_sec": 0,
+                "out_bytes_per_sec": 0,
+                "in_packets_per_sec": 0,
+                "out_packets_per_sec": 0,
+            }
         s1 = [int(v.split(":")[-1]) for v in s1.split() if v.split(":")[-1]]
         s2 = [int(v.split(":")[-1]) for v in s2.split() if v.split(":")[-1]]
         return {
