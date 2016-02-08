@@ -22,7 +22,7 @@ class NetStat(RemoteStats):
     def get_dev_stats(self):
         i_face = ""
         for iface in ("eth5", "eth0", "em1"):
-            result = self.run("grep {} /proc/net/dev".format(iface),
+            result = self.run("grep -w {} /proc/net/dev".format(iface),
                               warn_only=True, quiet=True)
             if not result.return_code:
                 i_face = iface
