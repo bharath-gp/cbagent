@@ -29,6 +29,7 @@ class RestClient(object):
     def post(self, url, data, timeout=120):
         r = self.session.post(url=url, data=data, timeout=timeout)
         if r.status_code == 500:
+            logger.info("Internal server error while posting {} to {}".format(data, url))
             raise InternalServerError(url)
 
     @interrupt
@@ -92,7 +93,7 @@ class MetadataClient(RestClient):
         self.post(url, data)
 
     def add_metric(self, name, bucket=None, server=None, collector=None):
-        logger.info("Adding metric: {}".format(name))
+        logger.debug("Adding metric: {}".format(name))
 
         url = self.base_url + "/add_metric/"
         data = {"name": name, "cluster": self.settings.cluster}
