@@ -36,6 +36,7 @@ class RestClient(object):
     def get(self, url, params):
         r = self.session.get(url=url, params=params)
         if r.status_code == 500:
+            logger.info(("Internal Server Error while getting {} from {}".format(params, url)))
             raise InternalServerError(url)
         return r.json()
 
