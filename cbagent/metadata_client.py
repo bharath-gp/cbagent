@@ -21,7 +21,7 @@ def interrupt(request, *args, **kargs):
         try:
             return request(*args, **kargs)
         except (requests.ConnectionError, InternalServerError) as e:
-            logger.log(e)
+            logger.info(e)
             time.sleep(RETRY_DELAY)
             continue
     logger.interrupt("Failed after {} tries.".format(MAX_RETRY))
