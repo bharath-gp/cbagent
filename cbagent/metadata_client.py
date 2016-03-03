@@ -1,7 +1,10 @@
 import requests
+import time
 from decorator import decorator
 from logger import logger
 
+MAX_RETRY = 5
+RETRY_DELAY = 5
 
 class InternalServerError(Exception):
 
@@ -14,11 +17,14 @@ class InternalServerError(Exception):
 
 @decorator
 def interrupt(request, *args, **kargs):
-    try:
-        return request(*args, **kargs)
-    except (requests.ConnectionError, InternalServerError) as e:
-        logger.interrupt(e)
-
+    for i in range(MAX_RETRY):
+        try:
+            return request(*args, **kargs)
+        except (requests.ConnectionError, InternalServerError) as e:
+            logger.log(e)
+            time.sleep(RETRY_DELAY)
+            continue
+    logger.interrupt("Failed after {} tries.".format(MAX_RETRY))
 
 class RestClient(object):
 
@@ -56,6 +62,7 @@ class MetadataClient(RestClient):
     def get_servers(self):
         url = self.base_url + "/get_servers/"
         params = {"cluster": self.settings.cluster}
+        logger.info("cluster: {}".format(params))
         return self.get(url, params)
 
     def get_buckets(self):
