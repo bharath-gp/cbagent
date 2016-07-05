@@ -14,6 +14,9 @@ from n1ql_stats import N1QLStats
 from ps import PS
 from typeperf import TypePerf
 from spring_latency import (SpringLatency, SpringQueryLatency,
-                            SpringSpatialQueryLatency, SpringN1QLQueryLatency)
+                            SpringSubdocLatency, SpringSpatialQueryLatency,
+                            SpringN1QLQueryLatency)
 from sync_gateway import SyncGateway
 from xdcr_lag import XdcrLag
+from fts_stats import (FtsCollector, FtsLatency, ElasticStats,
+                         FtsStats, FtsQueryStats)
